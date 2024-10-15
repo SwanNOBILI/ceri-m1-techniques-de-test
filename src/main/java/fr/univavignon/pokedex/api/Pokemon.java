@@ -55,7 +55,7 @@ public final class Pokemon extends PokemonMetadata {
 		this.iv = iv;
 	}
 
-	/** Combat Point getter getter. **/
+	/** Combat Point getter. **/
 	public int getCp() {
 		return cp;
 	}

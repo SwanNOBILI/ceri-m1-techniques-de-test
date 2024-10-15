@@ -13,6 +13,9 @@
 
     <!-- Configuration de build -->
     <build>
+        <testSourceDirectory>
+            src/test/java
+        </testSourceDirectory>
         <plugins>
             <!-- Compiler plugin pour spécifier la version de Java -->
             <plugin>
@@ -43,15 +46,21 @@
     <dependencies>
         <!-- JUnit 5 -->
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version> <!-- Vous pouvez choisir la version que vous souhaitez -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.0</version>
+            <version>5.9.3</version>
             <scope>test</scope>
         </dependency>
 
