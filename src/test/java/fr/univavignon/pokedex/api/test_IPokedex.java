@@ -6,112 +6,166 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class test_IPokedex {
-
-    // Déclaration des mocks et objets nécessaires
+    // Declaration of mocks and necessary objects
     private IPokedex pokedex;
-    private Pokemon bulbizarre;
-    private Pokemon aquali;
+    private PokemonLoader pokemonLoader;
 
     @Before
     public void setUp() {
-        // Création du mock de l'interface IPokedex
+        // Creating the mock of the IPokedex interface
         pokedex = mock(IPokedex.class);
         
-        // Création de quelques objets Pokemon factices
-        bulbizarre = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56);
-        aquali = new Pokemon(133, "Aquali", 186, 168, 260, 2729, 202, 5000, 4, 100);
+        // Creating some fake Pokemon objects
+        pokemonLoader = new PokemonLoader("src/ressources/pokemons.csv");
     }
 
     @Test
-    public void testSize() {
-        // Simuler la taille du pokedex
-        when(pokedex.size()).thenReturn(2);
-        
-        // Vérifier la taille du pokedex
-        assertEquals(2, pokedex.size());
-        
-        // Vérifier que la méthode size() a été appelée une fois
-        verify(pokedex, times(1)).size();
-    }
+    public void testSize() throws PokedexException{
+        // Iterate through the entire list of Pokemons located in pokemonLoader
+        for(int i = 0; i < pokemonLoader.getAllPokemons().size(); i ++){
+            // Add one Pokemon
+            pokedex.addPokemon(pokemonLoader.getOnePokemon(i));
 
+            // Simulate the total size of the pokedex according to the size of the Pokemon list (incremental size)
+            when(pokedex.size()).thenReturn(i+1);
+
+            // Verify that the size of the pokedex matches the number of loaded Pokemon
+            assertEquals(i+1, pokedex.size());
+        }
+    }
+    
     @Test
-    public void testAddPokemon() {
-        // Simuler l'ajout d'un Pokémon au pokedex
-        when(pokedex.addPokemon(bulbizarre)).thenReturn(0);
-        
-        // Ajouter un Pokémon au pokedex et vérifier l'index retourné
-        assertEquals(0, pokedex.addPokemon(bulbizarre));
-        
-        // Vérifier que la méthode addPokemon a été appelée avec le bon Pokémon
-        verify(pokedex, times(1)).addPokemon(bulbizarre);
-    }
+    public void testAddPokemon() throws PokedexException{
+        // Iterate through the entire list of Pokemons located in pokemonLoader
+        for(int i = 0; i < pokemonLoader.getAllPokemons().size(); i ++){
+            // Simulate adding the i-th Pokemon to the pokedex (i represents its position in the list)
+            when(pokedex.addPokemon(pokemonLoader.getOnePokemon(i))).thenReturn(pokemonLoader.getOnePokemon(i).getIndex());
 
+            // Add a Pokemon to the pokedex and verify the returned index
+            assertEquals(pokemonLoader.getOnePokemon(i).getIndex(), pokedex.addPokemon(pokemonLoader.getOnePokemon(i)));
+        }
+    }
+    
     @Test
-    public void testGetPokemon() throws PokedexException {
-        // Simuler la récupération d'un Pokémon par son id
-        when(pokedex.getPokemon(0)).thenReturn(bulbizarre);
-        
-        // Récupérer le Pokémon avec l'ID 0 et vérifier le résultat
-        assertEquals(bulbizarre, pokedex.getPokemon(0));
-        
-        // Vérifier que la méthode getPokemon a été appelée avec l'ID 0
-        verify(pokedex, times(1)).getPokemon(0);
-    }
+    public void testGetPokemon() throws PokedexException{
+        for(int i = 0; i < pokemonLoader.getAllPokemons().size(); i ++){
+            // Simulate retrieving the i-th Pokemon by its id
+            when(pokedex.getPokemon(i)).thenReturn(pokemonLoader.getOnePokemon(i));
 
-    @Test(expected = PokedexException.class)
+            // Retrieve the Pokemon with ID i and verify the result
+            assertEquals(pokemonLoader.getOnePokemon(i), pokedex.getPokemon(i));
+        }
+    }
+    
+    @Test
     public void testGetPokemonException() throws PokedexException {
-        // Simuler une exception si l'ID n'est pas valide
-        when(pokedex.getPokemon(999)).thenThrow(new PokedexException("Invalid ID"));
-        
-        // Essayer de récupérer un Pokémon avec un ID non valide (999) -> car on a l'ID 0 et 133
-        pokedex.getPokemon(999);
-    }
+        // Simulate an exception if the ID is not valid
+        when(pokedex.getPokemon(-1)).thenThrow(new PokedexException("Invalid ID"));
 
+        PokedexException e1 = null;
+        PokedexException e2 = null;
+        try {
+            pokedex.getPokemon(-1);
+        } catch (PokedexException e) {
+            e1 = e;
+        }
+        try {
+            pokemonLoader.getOnePokemon(999);
+        } catch (PokedexException e) {
+            e2 = e;
+        }
+        assertNotNull(e1); assertNotNull(e2);
+        assertEquals(e1.getMessage(), e2.getMessage());
+    }
+    
     @Test
-    public void testGetPokemons() {
-        // Simuler la liste des Pokémons
-        List<Pokemon> pokemonList = new ArrayList<>();
-        pokemonList.add(bulbizarre);
-        pokemonList.add(aquali);
+    public void testGetPokemons() throws PokedexException {
+        // Simulate the return of the list of Pokemons
+        when(pokedex.getPokemons()).thenReturn(pokemonLoader.getAllPokemons());
+
+        // Retrieve the sorted list (by Index) of Pokemons
+        List<Pokemon> res = pokedex.getPokemons();
         
-        // Simuler le retour de la liste des Pokémons
-        when(pokedex.getPokemons()).thenReturn(pokemonList);
-        
-        // Récupérer la liste des Pokémons et vérifier son contenu
-        List<Pokemon> result = pokedex.getPokemons();
-        assertEquals(2, result.size());
-        assertTrue(result.contains(bulbizarre));
-        assertTrue(result.contains(aquali));
-        
-        // Vérifier que la méthode getPokemons a été appelée
+        // Verify if the size of the pokemonLoader list is the same as "res"
+        assertEquals(pokemonLoader.getAllPokemons().size(), res.size());
+        for(int i = 0; i < res.size(); i ++){
+            // Verify that "res" indeed contains the Pokemon defined by its Index i
+            assertTrue(res.contains(pokemonLoader.getOnePokemon(i)));
+        }
+
+        // Verify that the getPokemons method was called once (when "res" was created)
         verify(pokedex, times(1)).getPokemons();
     }
-
-    @Test
-    public void testGetPokemonsWithOrder() {
-        // Simuler un comparateur pour trier les Pokémons par leur nom
-        Comparator<Pokemon> idComparator = Comparator.comparing(Pokemon::getIndex);
-        
-        // Simuler une liste triée
-        List<Pokemon> sortedList = new ArrayList<>();
-        sortedList.add(bulbizarre);  // Bulbizarre (après tri)
-        sortedList.add(aquali);  // Aquali
-        
-        // Simuler le retour de la liste triée des Pokémons
-        when(pokedex.getPokemons(idComparator)).thenReturn(sortedList);
-        
-        // Récupérer la liste triée des Pokémons et vérifier son contenu
-        List<Pokemon> result = pokedex.getPokemons(idComparator);
-        assertEquals(2, result.size());
-        assertEquals(0, result.get(0).getIndex());
-        assertEquals(133, result.get(1).getIndex());
-        
-        // Vérifier que la méthode getPokemons(Comparator) a été appelée
-        verify(pokedex, times(1)).getPokemons(idComparator);
+    
+    public static boolean isGetter(Method method) {
+        if (method.getName().startsWith("get") && method.getParameterCount() == 0){
+            return true;
+        }else{
+            return false;
+        }
     }
+    @Test
+    public void testGetPokemonsWithOrder() throws Exception {
+        List<Method> getters = new ArrayList<>();
+        List<Pokemon> pokemons_list = pokemonLoader.getAllPokemons();
+        Method[] methods_Metadata = PokemonMetadata.class.getDeclaredMethods();
+        Method[] methods_data = Pokemon.class.getDeclaredMethods();
+    
+        // Iterate through all methods to retrieve the getters
+        for (Method method : methods_Metadata) {
+            if (isGetter(method)) {
+                getters.add(method);
+            }
+        }
+        for (Method method : methods_data) {
+            if (isGetter(method)) {
+                getters.add(method);
+            }
+        }
+    
+        for (Method getter : getters) {
+            // Primary comparator based on the current getter
+            Comparator<Pokemon> primaryComparator = Comparator.comparing(pokemon -> {
+                try {
+                    // Dynamically call the getter
+                    return (Comparable) getter.invoke(pokemon);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+    
+            // Secondary comparator to break ties (for example by index)
+            Comparator<Pokemon> combinedComparator = primaryComparator.thenComparing(Pokemon::getIndex);
+    
+            // Simulate the Pokemon list originally sorted by index
+            pokemons_list.sort(combinedComparator);
+            when(pokedex.getPokemons(combinedComparator)).thenReturn(new ArrayList<>(pokemons_list));
+    
+            // Retrieve the list sorted by the comparator
+            List<Pokemon> res = pokedex.getPokemons(combinedComparator);
+    
+            // Reverse the list to simulate disorder
+            Collections.reverse(res);
+    
+            // Verify that the reversed list is different from the initially sorted list
+            assertNotEquals(res, pokemons_list);
+    
+            // Sort the reversed list with the combined comparator
+            res.sort(combinedComparator);
+    
+            // Verify that the sorted list is identical to the initially sorted list
+            assertEquals(res, pokemons_list);
+    
+            // Verify that the getPokemons(Comparator) method was called once
+            verify(pokedex, times(1)).getPokemons(combinedComparator);
+        }
+    }
+            
 }

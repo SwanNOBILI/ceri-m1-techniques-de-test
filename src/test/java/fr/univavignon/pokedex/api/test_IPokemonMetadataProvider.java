@@ -8,32 +8,37 @@ import static org.mockito.Mockito.*;
 
 public class test_IPokemonMetadataProvider {
     private IPokemonMetadataProvider pokemonMetadataProvider;
-    private PokemonMetadata pokemonMetadata;
+    private PokemonLoader pokemonLoader;
 
     @Before
     public void setUp(){
-        // Creating a pokemonMetadata object
-        pokemonMetadata = new PokemonMetadata(0, "Bulbizarre", 126, 126, 90);
-
         // Mocking the pokemonMetadataProvider
         pokemonMetadataProvider = mock(IPokemonMetadataProvider.class);
+
+        pokemonLoader = new PokemonLoader("src/ressources/pokemons.csv");
     }
 
     @Test
     public void testGetPokemonMetadata() throws PokedexException {
-        // Defining the behavior of getPokemonMetadata
-        when(pokemonMetadataProvider.getPokemonMetadata(0)).thenReturn(pokemonMetadata);
+        for(int i = 0; i < pokemonLoader.getAllPokemons().size(); i ++){
+            // Creating a Pokemon instance
+            Pokemon p = pokemonLoader.getOnePokemon(i);
+            PokemonMetadata m = new PokemonMetadata(p.getIndex(), p.getName(), p.getAttack(), p.getDefense(), p.getStamina());
 
-        PokemonMetadata createdPokemonMetadata = pokemonMetadataProvider.getPokemonMetadata(0);
-        assertEquals("PokemonMetadata should be the mock instance", pokemonMetadata, createdPokemonMetadata);
+            // Defining the behavior of getPokemonMetadata
+            when(pokemonMetadataProvider.getPokemonMetadata(p.getIndex())).thenReturn(m);
+
+            PokemonMetadata createdPokemonMetadata = pokemonMetadataProvider.getPokemonMetadata(p.getIndex());
+            assertEquals("PokemonMetadata should be the mock instance", m, createdPokemonMetadata);
+        }
     }
 
     @Test(expected = PokedexException.class)
     public void testGetPokemonMetadataInvalidIndex() throws PokedexException {
         // Define behavior for invalid index
-        when(pokemonMetadataProvider.getPokemonMetadata(-1)).thenThrow(new PokedexException("Invalid index"));
+        when(pokemonMetadataProvider.getPokemonMetadata(-1)).thenThrow(new PokedexException("Invalid ID"));
 
-        // Call the method with an invalid index and expect an exception
-        pokemonMetadataProvider.getPokemonMetadata(-1);
+        // Check if the PokedexException from IPokemonMetadataProvider is the same as PokemonLoader
+        assertEquals(pokemonMetadataProvider.getPokemonMetadata(-1), pokemonLoader.getOnePokemon(-1));
     }
 }
