@@ -112,6 +112,7 @@ public class test_IPokedex {
         }
     }
     @Test
+    @SuppressWarnings("unchecked")
     public void testGetPokemonsWithOrder() throws Exception {
         List<Method> getters = new ArrayList<>();
         List<Pokemon> pokemons_list = pokemonLoader.getAllPokemons();
@@ -129,17 +130,19 @@ public class test_IPokedex {
                 getters.add(method);
             }
         }
-    
+
+        
         for (Method getter : getters) {
             // Primary comparator based on the current getter
             Comparator<Pokemon> primaryComparator = Comparator.comparing(pokemon -> {
                 try {
                     // Dynamically call the getter
-                    return (Comparable) getter.invoke(pokemon);
+                    return (Comparable<Object>) getter.invoke(pokemon);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             });
+            
     
             // Secondary comparator to break ties (for example by index)
             Comparator<Pokemon> combinedComparator = primaryComparator.thenComparing(Pokemon::getIndex);
