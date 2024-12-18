@@ -168,4 +168,48 @@ public class PokedexTest {
         assertThrows(PokedexException.class, () -> pokedex.getPokemonMetadata(invalidId), 
                      "A PokedexException should be thrown for an invalid ID.");
     }
+
+    // Test for getting a Pokemon with ID exactly at the upper boundary
+    @Test
+    public void testGetPokemonValidIdUpperBoundary() throws PokedexException {
+        // Ajouter plusieurs Pokémon
+        pokedex.addPokemon(pokemon1);
+        pokedex.addPokemon(pokemon2);
+
+        // Récupérer le dernier Pokémon (ID = size() - 1)
+        Pokemon retrievedPokemon = pokedex.getPokemon(pokedex.size() - 1);
+        assertEquals(pokemon2, retrievedPokemon, 
+                    "The Pokemon should be retrieved correctly for the upper boundary ID.");
+    }
+
+    // Test for getting a Pokemon with ID just below 0
+    @Test
+    public void testGetPokemonInvalidIdNegativeBoundary() {
+        // Ajouter un Pokémon
+        pokedex.addPokemon(pokemon1);
+
+        // Tenter de récupérer un Pokémon avec ID < 0
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(-1), 
+                    "A PokedexException should be thrown for a negative ID.");
+    }
+
+    // Test for getting a Pokemon with ID just above the size
+    @Test
+    public void testGetPokemonInvalidIdAboveBoundary() {
+        // Ajouter un Pokémon
+        pokedex.addPokemon(pokemon1);
+
+        // Tenter de récupérer un Pokémon avec ID = size()
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(pokedex.size()), 
+                    "A PokedexException should be thrown for an ID equal to the size of the Pokedex.");
+    }
+
+    // Test for getting a Pokemon with an empty Pokedex
+    @Test
+    public void testGetPokemonEmptyPokedex() {
+        // Tenter de récupérer un Pokémon dans un Pokedex vide
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(0), 
+                    "A PokedexException should be thrown when retrieving a Pokemon from an empty Pokedex.");
+    }
+
 }
