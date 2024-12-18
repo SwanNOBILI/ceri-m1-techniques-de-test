@@ -2,6 +2,8 @@ package fr.univavignon.pokedex.api;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PokemonComparatorsTest {
@@ -15,8 +17,8 @@ public class PokemonComparatorsTest {
         // Use the NAME comparator to compare Pokemon by name
         int result = PokemonComparators.NAME.compare(pokemon1, pokemon2);
 
-        // Assert that "Bulbizarre" should come before "Aquali"
-        assertTrue(result < 0, "Bulbizarre should come before Aquali");
+        // Assert that "Aquali" should come before "Bulbizarre"
+        assertTrue(result > 0, "Aquali should come before Bulbizarre");
     }
 
     @Test
@@ -52,8 +54,11 @@ public class PokemonComparatorsTest {
         Pokemon pokemon2 = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
         Pokemon pokemon3 = new Pokemon(1, "Pikachu", 112, 85, 60, 500, 35, 2000, 4, 85.0);
 
-        // Create a list and sort by name, index, then CP
-        List<Pokemon> pokemons = List.of(pokemon1, pokemon2, pokemon3);
+        // Use an ArrayList to allow modifications
+        List<Pokemon> pokemons = new ArrayList<>();
+        pokemons.add(pokemon1); pokemons.add(pokemon2); pokemons.add(pokemon3);
+
+        // Sort by name, index, then CP
         pokemons.sort(PokemonComparators.NAME.thenComparing(PokemonComparators.INDEX).thenComparing(PokemonComparators.CP));
 
         // Verify the sorting order
@@ -61,4 +66,5 @@ public class PokemonComparatorsTest {
         assertEquals("Bulbizarre", pokemons.get(1).getName());
         assertEquals("Pikachu", pokemons.get(2).getName());
     }
+
 }
