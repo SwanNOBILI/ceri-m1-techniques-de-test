@@ -126,19 +126,22 @@ public class PokedexTest {
     @Test
     public void testGetPokemonMetadata() throws PokedexException {
         int id = 0;
-
-        // Defining the metadata for the Pokemon
+    
+        // Définir les métadonnées du Pokémon
         PokemonMetadata metadata = new PokemonMetadata(id, "Bulbizarre", 126, 126, 90);
         
-        // Mocking the metadataProvider's getPokemonMetadata method to return the mocked metadata
+        // Mocking le comportement du fournisseur de métadonnées pour renvoyer les métadonnées
         when(metadataProviderMock.getPokemonMetadata(id)).thenReturn(metadata);
-
-        // Retrieving the Pokemon metadata using the Pokedex (which calls the mock metadata provider)
+    
+        // Ajouter un Pokémon avant de récupérer ses métadonnées
+        pokedex.addPokemon(pokemon1);
+    
+        // Récupérer les métadonnées du Pokémon en utilisant le Pokedex (qui appelle le mock metadata provider)
         PokemonMetadata retrievedMetadata = pokedex.getPokemonMetadata(id);
         
-        // Verifying that the retrieved metadata matches the mocked metadata
-        assertEquals(metadata, retrievedMetadata, "The retrieved metadata should match the mocked metadata.");
-    }
+        // Vérifier que les métadonnées récupérées correspondent aux métadonnées simulées
+        assertEquals(metadata, retrievedMetadata, "Les métadonnées récupérées doivent correspondre aux métadonnées simulées.");
+    }    
 
     // Test for getting Pokemon metadata by invalid ID (should throw exception)
     @Test
