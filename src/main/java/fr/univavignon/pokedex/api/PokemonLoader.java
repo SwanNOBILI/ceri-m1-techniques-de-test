@@ -35,6 +35,7 @@ public class PokemonLoader {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
