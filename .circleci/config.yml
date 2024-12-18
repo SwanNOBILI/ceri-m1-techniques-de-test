@@ -28,6 +28,12 @@ jobs:
       - run:
           name: Test
           command: mvn test
+      - run:
+          name: Jacoco file generation
+          command: mvn jacoco:report
+      # Using the Codecov orb to download coverage results
+      - codecov/upload:
+          file: target/site/jacoco/jacoco.xml
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
