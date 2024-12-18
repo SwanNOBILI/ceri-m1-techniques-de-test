@@ -60,4 +60,29 @@ public class PokemonLoaderTest {
         }
     }
 
+    // Test case for the valid index in the getOnePokemon method
+    @Test
+    public void testGetOnePokemonWithValidIndex() throws PokedexException {
+        List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
+        // Assume we have at least one pokemon in the list for the test
+        int validIndex = 0;  // We can use the first element's index for this test
+        Pokemon pokemon = pokemonLoader.getOnePokemon(validIndex);
+        
+        // Verify the returned Pokémon is the correct one
+        assertNotNull(pokemon, "Pokemon should not be null for valid index.");
+        assertEquals(pokemons.get(validIndex), pokemon, "The returned Pokemon should match the one at the given index.");
+    }
+
+    // Test case for an invalid index in the getOnePokemon method
+    @Test
+    public void testGetOnePokemonWithInvalidIndex() {
+        List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
+        // Use an index that is out of bounds
+        int invalidIndex = pokemons.size(); // An invalid index should be equal to the size of the list or larger
+        
+        // Verify that a PokedexException is thrown
+        assertThrows(PokedexException.class, () -> {
+            pokemonLoader.getOnePokemon(invalidIndex);
+        }, "PokedexException should be thrown for invalid index.");
+    }
 }
