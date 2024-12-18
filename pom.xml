@@ -53,13 +53,13 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- Générer le rapport JaCoCo après les tests -->
+                    <!-- Générer le rapport JaCoCo après Vérification -->
                     <execution>
                         <id>report</id>
                         <goals>
-                            <goal>report</goal>  <!-- Générez le rapport -->
+                            <goal>report</goal>
                         </goals>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                     </execution>
 
                 </executions>
