@@ -73,16 +73,41 @@ public class PokemonLoaderTest {
         assertEquals(pokemons.get(validIndex), pokemon, "The returned Pokemon should match the one at the given index.");
     }
 
-    // Test case for an invalid index in the getOnePokemon method
+    // Test case for an index that is too small (negative index)
     @Test
-    public void testGetOnePokemonWithInvalidIndex() {
-        List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
-        // Use an index that is out of bounds
-        int invalidIndex = pokemons.size(); // An invalid index should be equal to the size of the list or larger
+    public void testGetOnePokemonWithNegativeIndex() {
+        // Use a negative index, which is invalid
+        int invalidIndex = -1;
         
         // Verify that a PokedexException is thrown
         assertThrows(PokedexException.class, () -> {
             pokemonLoader.getOnePokemon(invalidIndex);
-        }, "PokedexException should be thrown for invalid index.");
+        }, "PokedexException should be thrown for negative index.");
+    }
+
+    // Test case for an index that is too large (out of bounds)
+    @Test
+    public void testGetOnePokemonWithLargeIndex() {
+        List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
+        // Use an index that is out of bounds (larger than the list size)
+        int invalidIndex = pokemons.size(); // This should be an invalid index
+        
+        // Verify that a PokedexException is thrown
+        assertThrows(PokedexException.class, () -> {
+            pokemonLoader.getOnePokemon(invalidIndex);
+        }, "PokedexException should be thrown for index greater than the list size.");
+    }
+
+    // Test case for an invalid index in the getOnePokemon method (index equal to the size of the list)
+    @Test
+    public void testGetOnePokemonWithIndexEqualToSize() {
+        List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
+        // Use an index that is exactly equal to the size of the list, which should also be invalid
+        int invalidIndex = pokemons.size(); // This is the same as testing for an out-of-bounds index
+        
+        // Verify that a PokedexException is thrown
+        assertThrows(PokedexException.class, () -> {
+            pokemonLoader.getOnePokemon(invalidIndex);
+        }, "PokedexException should be thrown for index equal to the size of the list.");
     }
 }
