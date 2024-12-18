@@ -62,8 +62,16 @@ public class Pokedex implements IPokedex {
     }
 
     @Override
+    /**
+     * @param id Pokemon ID
+     * @return PokemonMetadata
+     * @throws PokedexException Invalid ID
+     */
     public PokemonMetadata getPokemonMetadata(int id) throws PokedexException {
-        // Fetches Pokemon metadata from metadataProvider
+        // If correct ID
+        if (id < 0 || id >= pokemons.size()) {
+            throw new PokedexException("ID invalide : " + id);
+        }
         return metadataProvider.getPokemonMetadata(id);
     }
 }

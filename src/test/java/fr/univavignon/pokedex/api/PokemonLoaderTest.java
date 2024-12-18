@@ -25,7 +25,7 @@ public class PokemonLoaderTest {
         // Check if the valid file contains Pokémon data with exactly 10 columns
         List<Pokemon> pokemons = pokemonLoader.getAllPokemons();
         assertFalse(pokemons.isEmpty(), "Pokemon list should not be empty.");
-        // Checking if the first Pokémon object has all attributes, assuming the constructor was used correctly
+        // Checking if the first Pokémon object has all attributes
         Pokemon pokemon = pokemons.get(0);
         
         // Verifying the attributes of the first Pokémon
