@@ -12,7 +12,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class test_IPokedex {
+public class IPokedexTest {
     // Declaration of mocks and necessary objects
     private IPokedex pokedex;
     private PokemonLoader pokemonLoader;

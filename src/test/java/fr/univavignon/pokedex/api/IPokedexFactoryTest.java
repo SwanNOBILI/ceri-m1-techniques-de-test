@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class test_IPokedexFactory {
+public class IPokedexFactoryTest {
 
     private IPokedexFactory pokedexFactory;
     private IPokemonMetadataProvider metadataProvider;

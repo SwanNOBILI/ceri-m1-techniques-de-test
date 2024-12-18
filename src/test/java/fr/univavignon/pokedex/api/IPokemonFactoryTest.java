@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class test_IPokemonFactory {
+public class IPokemonFactoryTest {
 
     private IPokemonFactory pokemonFactory;
     private PokemonLoader pokemonLoader;
