@@ -51,7 +51,7 @@ jobs:
             # Ajouter, commettre et pousser la mise à jour
             git add checkstyle
             git commit -m "Mise à jour du rapport Checkstyle"
-            git push origin gh-pages  # Pousser les changements sur la branche gh-pages
+            git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages # Pousser les changements sur la branche gh-pages
 
 # Workflow pour orchestrer les jobs
 workflows:
