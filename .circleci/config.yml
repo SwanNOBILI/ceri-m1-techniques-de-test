@@ -44,9 +44,9 @@ jobs:
             git fetch --all
             git checkout gh-pages  # Passer à la branche gh-pages
 
-            # Copier le fichier généré dans la branche gh-pages
+            # Récupérer le fichier checkstyle.html depuis la branche master et le copier dans le répertoire checkstyle/index.html de gh-pages
             mkdir -p checkstyle
-            cp target/site/checkstyle.html checkstyle/index.html  # Copier le fichier dans le répertoire checkstyle/index.html
+            git show master:target/site/checkstyle.html > checkstyle/index.html
 
             # Ajouter, commettre et pousser la mise à jour
             git add checkstyle
