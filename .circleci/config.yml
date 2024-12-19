@@ -24,7 +24,9 @@ jobs:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Générer le rapport Checkstyle
-          command: mvn checkstyle:checkstyle site
+          command: |
+            mvn checkstyle:checkstyle site
+            ls -l target/site  # Liste les fichiers pour vérifier la présence du rapport
       - persist_to_workspace:  # Sauvegarde les fichiers générés pour le prochain job
           root: .
           paths:
@@ -40,12 +42,13 @@ jobs:
       - run:
           name: Déployer sur GitHub Pages
           command: |
-            git config --global "nobili.swan@gmail.com"
-            git config --global "SwanNOBILI"
+            ls -l /workspace  # Vérifie que le workspace est bien attaché
+            git config --global "user.name" "SwanNOBILI"
+            git config --global "user.email" "nobili.swan@gmail.com"
             git fetch --all
             git checkout gh-pages
             mkdir -p checkstyle
-            cp /workspace/target/site/checkstyle.html checkstyle/index.html
+            cp /workspace/target/site/checkstyle.html checkstyle/index.html  # Assurer le bon chemin
             git add checkstyle
             git commit -m "Mise à jour du rapport Checkstyle"
             git push origin gh-pages
