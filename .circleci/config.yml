@@ -49,6 +49,3 @@ workflows:
   build-and-upload:
     jobs:
       - build-and-test  # Exécuter d'abord le job de construction et tests
-      - deploy-gh-pages:
-          requires:
-            - build-and-test
