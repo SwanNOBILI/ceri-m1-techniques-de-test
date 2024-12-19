@@ -22,8 +22,33 @@ jobs:
           command: mvn jacoco:report
       - codecov/upload: # Utilisation de l'orb Codecov pour télécharger les résultats de couverture
           file: target/site/jacoco/jacoco.xml
+      - run:
+          name: Générer le rapport Checkstyle
+          command: mvn checkstyle:checkstyle site
+      - persist_to_workspace:  # Sauvegarde les fichiers générés pour le prochain job
+          root: .
+          paths:
+            - target/site
 
- # Récupérer le code pour s'assurer que tous les fichiers sont disponibles
+  deploy-gh-pages:
+    docker:
+      - image: cimg/base:stable  # Image avec Git et des outils de base
+    steps:
+      - attach_workspace:  # Récupère les fichiers sauvegardés
+          at: /workspace
+      - checkout
+      - run:
+          name: Déployer sur GitHub Pages
+          command: |
+            git config --global "nobili.swan@gmail.com"
+            git config --global "SwanNOBILI"
+            git fetch --all
+            git checkout gh-pages
+            mkdir -p checkstyle
+            cp /workspace/target/site/checkstyle.html checkstyle/index.html
+            git add checkstyle
+            git commit -m "Mise à jour du rapport Checkstyle"
+            git push origin gh-pages
 
 # Workflow pour orchestrer les jobs
 workflows:
@@ -31,3 +56,6 @@ workflows:
   build-and-upload:
     jobs:
       - build-and-test  # Exécuter d'abord le job de construction et tests
+      - deploy-gh-pages:
+          requires:
+            - build-and-test
