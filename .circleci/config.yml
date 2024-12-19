@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Déployer sur GitHub Pages
           command: |
-            ls -l /target/site/checkstyle.html
+            ls
             git config --global "user.name" "SwanNOBILI"
             git config --global "user.email" "nobili.swan@gmail.com"
             git fetch --all
