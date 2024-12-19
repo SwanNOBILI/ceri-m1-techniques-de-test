@@ -27,28 +27,31 @@ jobs:
           name: Générer le rapport Checkstyle
           command: |
             mvn checkstyle:checkstyle site
-            ls -l target/site  # Liste les fichiers pour vérifier la présence du rapport
-      - run:
-          name: Nettoyer les fichiers non suivis
-          command: |
-            git reset --hard
-            git clean -fdx  # Nettoie les fichiers non suivis
+
+  deploy-to-gh-pages:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout  # Récupérer le code
       - run:
           name: Déployer sur GitHub Pages
           command: |
+            # Vérifier si le fichier checkstyle.html est présent
             ls -l target/site/checkstyle.html
+            
             git config --global "user.name" "SwanNOBILI"
             git config --global "user.email" "nobili.swan@gmail.com"
             git fetch --all
-            git checkout gh-pages
+            git checkout gh-pages  # Passer à la branche gh-pages
+
+            # Copier le fichier généré dans la branche gh-pages
             mkdir -p checkstyle
-            ls
-            cp target/site/checkstyle.html checkstyle/index.html
+            cp target/site/checkstyle.html checkstyle/index.html  # Copier le fichier dans le répertoire checkstyle/index.html
+
+            # Ajouter, commettre et pousser la mise à jour
             git add checkstyle
             git commit -m "Mise à jour du rapport Checkstyle"
-            git push origin gh-pages
-
-
+            git push origin gh-pages  # Pousser les changements sur la branche gh-pages
 
 # Workflow pour orchestrer les jobs
 workflows:
@@ -56,3 +59,6 @@ workflows:
   build-and-upload:
     jobs:
       - build-and-test  # Exécuter d'abord le job de construction et tests
+      - deploy-to-gh-pages:
+          requires:
+            - build-and-test  # Le déploiement ne doit être effectué qu'après la génération du rapport
