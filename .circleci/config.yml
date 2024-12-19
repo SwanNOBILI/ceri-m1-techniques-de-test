@@ -29,11 +29,6 @@ jobs:
             mvn checkstyle:checkstyle site
             ls -l target/site  # Liste les fichiers pour vérifier la présence du rapport
       - run:
-          name: Nettoyer les fichiers non suivis
-          command: |
-            git reset --hard
-            git clean -fdx  # Nettoie les fichiers non suivis
-      - run:
           name: Déployer sur GitHub Pages
           command: |
             ls -l target/site/checkstyle.html
