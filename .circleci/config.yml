@@ -36,8 +36,6 @@ jobs:
     docker:
       - image: cimg/base:stable  # Image avec Git et des outils de base
     steps:
-      - attach_workspace:
-          at: /workspace
       - run:
           name: Déployer sur GitHub Pages
           command: |
