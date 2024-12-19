@@ -8,26 +8,31 @@ orbs:
 jobs:
   build-and-test:
     docker:
-      - image: cimg/openjdk:17.0  # Utilisation d'une image Docker CircleCI OpenJDK
-      - image: cimg/base:stable  # Image avec Git et des outils de base
+      - image: cimg/openjdk:17.0
+      - image: cimg/base:stable
     steps:
       - checkout  # Récupérer le code
       - run:
           name: Build
-          command: mvn -B -DskipTests clean package  # Nettoyer et construire sans exécuter les tests
+          command: mvn -B -DskipTests clean package
       - run:
           name: Test
-          command: mvn test  # Exécuter les tests
+          command: mvn test
       - run:
           name: Jacoco file generation
           command: mvn jacoco:report
-      - codecov/upload: # Utilisation de l'orb Codecov pour télécharger les résultats de couverture
+      - codecov/upload:
           file: target/site/jacoco/jacoco.xml
       - run:
           name: Générer le rapport Checkstyle
           command: |
             mvn checkstyle:checkstyle site
             ls -l target/site  # Liste les fichiers pour vérifier la présence du rapport
+      - run:
+          name: Nettoyer les fichiers non suivis
+          command: |
+            git reset --hard
+            git clean -fdx  # Nettoie les fichiers non suivis
       - run:
           name: Déployer sur GitHub Pages
           command: |
@@ -41,6 +46,7 @@ jobs:
             git add checkstyle
             git commit -m "Mise à jour du rapport Checkstyle"
             git push origin gh-pages
+
 
 
 # Workflow pour orchestrer les jobs
