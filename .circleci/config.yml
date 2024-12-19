@@ -28,12 +28,6 @@ jobs:
           command: |
             mvn checkstyle:checkstyle site
             ls -l target/site  # Liste les fichiers pour vérifier la présence du rapport
-      - persist_to_workspace:  # Sauvegarde les fichiers générés pour le prochain job
-          root: .
-          paths:
-            - target/site
-      - attach_workspace:
-          at: /workspace
       - run:
           name: Déployer sur GitHub Pages
           command: |
