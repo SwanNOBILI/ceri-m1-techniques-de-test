@@ -54,7 +54,7 @@ jobs:
             cp -r target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
             
             # Add, Commit and Push
-            git pull
+            git pull origin gh-pages
             git add .
             git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
             git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
