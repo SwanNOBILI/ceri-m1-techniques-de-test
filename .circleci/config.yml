@@ -49,8 +49,8 @@ jobs:
             # Copier les fichiers générés dans les bons dossiers
             mkdir -p javadoc
             mkdir -p checkstyle
-            git show:target/site/apidocs/* javadoc/  # Copier la Javadoc
-            git show:target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
+            git show master:target/site/apidocs/* javadoc/  # Copier la Javadoc
+            git show master:target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
             
             # Ajouter une page d'index principale
             echo '<!DOCTYPE html>
