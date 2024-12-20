@@ -49,5 +49,12 @@
         <module name="MultipleVariableDeclarations" />
         <module name="SimplifyBooleanExpression" />
         <module name="SimplifyBooleanReturn" />
+
+
+        <module name="JavadocType"/>
+        <module name="JavadocMethod"/>
+        <module name="JavadocVariable"/>
+        <module name="JavadocPackage"/>
+
     </module>
 </module>

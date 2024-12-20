@@ -77,6 +77,28 @@
                     <failsOnError>false</failsOnError>
                 </configuration>
             </plugin>
+
+            <!-- Plugin pour la Documentation Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnError>false</failOnError>
+                    <doctitle>${project.name} API Documentation</doctitle>
+                    <windowtitle>${project.name} API</windowtitle>
+                    <destDir>${project.build.directory}/site/apidocs</destDir>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
