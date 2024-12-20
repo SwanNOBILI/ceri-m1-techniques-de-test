@@ -48,8 +48,8 @@ jobs:
             
             # Copier les fichiers générés dans le bon dossier
             mkdir -p javadoc
-            git show master:target/site/apidocs/* javadoc/  # Copier la Javadoc
             git show master:target/site/index.html checkstyle/checkstyle.html  # Copier le rapport Checkstyle
+            git show master:target/site/apidocs/* javadoc/  # Copier la Javadoc
             
             # Ajouter, commettre et pousser les changements
             git add .
