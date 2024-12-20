@@ -23,6 +23,12 @@ jobs:
           command: mvn jacoco:report
       - codecov/upload:
           file: target/site/jacoco/jacoco.xml
+
+  deploy-to-gh-pages:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout  # Récupérer le code
       - run:
           name: Générer le rapport Checkstyle
           command: |
@@ -31,12 +37,6 @@ jobs:
           name: Générer la Javadoc
           command: |
             mvn javadoc:javadoc
-
-  deploy-to-gh-pages:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout  # Récupérer le code
       - run:
           name: Déployer sur GitHub Pages
           command: |
