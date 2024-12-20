@@ -26,6 +26,7 @@ jobs:
 
   deploy-to-gh-pages:
     docker:
+      - image: cimg/openjdk:17.0
       - image: cimg/base:stable
     steps:
       - checkout  # Récupérer le code
