@@ -45,7 +45,7 @@ jobs:
             git config --global user.name "SwanNOBILI"
             git config --global user.email "nobili.swan@gmail.com"
             git fetch --all
-            git checkout --orphan gh-pages
+            git checkout gh-pages
             
             # Copier les fichiers générés dans les bons dossiers
             mkdir -p javadoc
