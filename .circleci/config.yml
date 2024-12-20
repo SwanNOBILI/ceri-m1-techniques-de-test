@@ -56,7 +56,7 @@ jobs:
             # Add, Commit and Push
             git add .
             git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
-            git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
+            git push  --force https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
 
 # Workflow pour orchestrer les jobs
 workflows:
