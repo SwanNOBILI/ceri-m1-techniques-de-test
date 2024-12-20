@@ -44,19 +44,17 @@ jobs:
             git fetch --all
             git checkout gh-pages || git checkout --orphan gh-pages
             
-            # Organisation des fichiers générés
+            # Créer le dossier javadoc
             mkdir -p javadoc
-            mkdir -p checkstyle
-            cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
-            cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
             
-            # Ajouter un index principal pour rediriger vers les sous-dossiers
-            echo '<html><body><h1>Documentation</h1><ul><li><a href="javadoc/index.html">Javadoc</a></li><li><a href="checkstyle/index.html">Checkstyle</a></li></ul></body></html>' > index.html
+            # Copier la Javadoc générée
+            cp -R target/site/apidocs/* javadoc/
             
             # Ajouter, commettre et pousser les changements
-            git add .
-            git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
+            git add javadoc
+            git commit -m "Ajout de la Javadoc"
             git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
+
 
 # Workflow pour orchestrer les jobs
 workflows:

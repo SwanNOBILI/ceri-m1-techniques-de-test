@@ -50,14 +50,12 @@
         <module name="SimplifyBooleanExpression" />
         <module name="SimplifyBooleanReturn" />
 
-
         <module name="JavadocType"/>
         <module name="JavadocMethod"/>
         <module name="JavadocVariable"/>
 
     </module>
 
-    <!-- Place JavadocPackage ici si nécessaire -->
     <module name="JavadocPackage"/>
 
 </module>

@@ -69,7 +69,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.2</version>
                 <configuration>
                 <configLocation>checkstyle.xml</configLocation>
                     <outputFile>target/site/checkstyle.html</outputFile>
@@ -95,7 +95,7 @@
                     <failOnError>false</failOnError>
                     <doctitle>${project.name} API Documentation</doctitle>
                     <windowtitle>${project.name} API</windowtitle>
-                    <destDir>${project.build.directory}/site/apidocs</destDir>
+                    <destDir>apidocs</destDir>
                 </configuration>
             </plugin>
 
