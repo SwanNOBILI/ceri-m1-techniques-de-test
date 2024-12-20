@@ -53,19 +53,6 @@ jobs:
             cp -r target/site/apidocs/* javadoc/  # Copier la Javadoc
             cp -r target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
             
-            # Ajouter une page d'index principale
-            echo '<!DOCTYPE html>
-            <html>
-            <head><title>Documentation</title></head>
-            <body>
-              <h1>Documentation</h1>
-              <ul>
-                <li><a href="javadoc/index.html">Javadoc</a></li>
-                <li><a href="checkstyle/index.html">Checkstyle</a></li>
-              </ul>
-            </body>
-            </html>' > index.html
-            
             # Add, Commit and Push
             git add .
             git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
