@@ -45,13 +45,13 @@ jobs:
             git config --global user.name "SwanNOBILI"
             git config --global user.email "nobili.swan@gmail.com"
             git fetch --all
-            git checkout --orphan gh-pages
+            git checkout gh-pages || git checkout --orphan gh-pages
             
             # Copier les fichiers générés dans les bons dossiers
             mkdir -p javadoc
             mkdir -p checkstyle
-            cp -r target/site/apidocs/* javadoc/  # Copier la Javadoc
-            cp -r target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
+            cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
+            cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
             
             # Add, Commit and Push
             git add .
