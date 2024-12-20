@@ -32,43 +32,43 @@ jobs:
           command: |
             mvn javadoc:javadoc
 
-deploy-to-gh-pages:
-  docker:
-    - image: cimg/base:stable
-  steps:
-    - checkout  # Récupérer le code
-    - run:
-        name: Déployer sur GitHub Pages
-        command: |
-          # Configuration Git
-          git config --global user.name "SwanNOBILI"
-          git config --global user.email "nobili.swan@gmail.com"
-          git fetch --all
-          git checkout gh-pages || git checkout --orphan gh-pages
-          
-          # Copier les fichiers générés dans les bons dossiers
-          mkdir -p javadoc
-          mkdir -p checkstyle
-          cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
-          cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
-          
-          # Ajouter une page d'index principale
-          echo '<!DOCTYPE html>
-          <html>
-          <head><title>Documentation</title></head>
-          <body>
-            <h1>Documentation</h1>
-            <ul>
-              <li><a href="javadoc/index.html">Javadoc</a></li>
-              <li><a href="checkstyle/index.html">Checkstyle</a></li>
-            </ul>
-          </body>
-          </html>' > index.html
-          
-          # Add, Commit and Push
-          git add .
-          git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
-          git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
+  deploy-to-gh-pages:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout  # Récupérer le code
+      - run:
+          name: Déployer sur GitHub Pages
+          command: |
+            # Configuration Git
+            git config --global user.name "SwanNOBILI"
+            git config --global user.email "nobili.swan@gmail.com"
+            git fetch --all
+            git checkout gh-pages || git checkout --orphan gh-pages
+            
+            # Copier les fichiers générés dans les bons dossiers
+            mkdir -p javadoc
+            mkdir -p checkstyle
+            cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
+            cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
+            
+            # Ajouter une page d'index principale
+            echo '<!DOCTYPE html>
+            <html>
+            <head><title>Documentation</title></head>
+            <body>
+              <h1>Documentation</h1>
+              <ul>
+                <li><a href="javadoc/index.html">Javadoc</a></li>
+                <li><a href="checkstyle/index.html">Checkstyle</a></li>
+              </ul>
+            </body>
+            </html>' > index.html
+            
+            # Add, Commit and Push
+            git add .
+            git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
+            git push https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
 
 # Workflow pour orchestrer les jobs
 workflows:
