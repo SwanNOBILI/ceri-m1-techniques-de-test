@@ -14,3 +14,6 @@ M1-IA Classique
 <br>
 
 [![Checkstyle](https://img.shields.io/badge/Checkstyle-passing-brightgreen)](https://swannobili.github.io/ceri-m1-techniques-de-test/checkstyle)
+<br>
+
+[![Javadoc](https://img.shields.io/website?url=https%3A%2F%2Fswannobili.github.io%2Fceri-m1-techniques-de-test%2F)](https://swannobili.github.io/ceri-m1-techniques-de-test/checkstyle)
