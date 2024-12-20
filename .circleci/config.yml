@@ -46,7 +46,7 @@ jobs:
 
             # Récupérer le fichier checkstyle.html depuis la branche master et le copier dans le répertoire checkstyle/index.html de gh-pages
             mkdir -p checkstyle
-            git show master:target/site/checkstyle.html > checkstyle/index.html
+            git show master:target/site/checkstyle.html > index.html
 
             # Ajouter, commettre et pousser la mise à jour
             git add checkstyle
