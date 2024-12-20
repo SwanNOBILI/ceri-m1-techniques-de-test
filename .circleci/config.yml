@@ -50,7 +50,7 @@ jobs:
             mkdir -p javadoc
             mkdir -p checkstyle
             cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
-            cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
+            cp target/site/index.html checkstyle/index.html  # Copier le rapport Checkstyle
             
             # Ajouter une page d'index principale
             echo '<!DOCTYPE html>
