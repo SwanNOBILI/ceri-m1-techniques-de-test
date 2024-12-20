@@ -1,0 +1,69 @@
+version: 2.1
+
+# Définir les orbs
+orbs:
+  codecov: codecov/codecov@4.0.1
+
+# Définir un job pour compiler et tester l'application
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/openjdk:17.0
+      - image: cimg/base:stable
+    steps:
+      - checkout  # Récupérer le code
+      - run:
+          name: Build
+          command: mvn -B -DskipTests clean package
+      - run:
+          name: Test
+          command: mvn test
+      - run:
+          name: Jacoco file generation
+          command: mvn jacoco:report
+      - codecov/upload:
+          file: target/site/jacoco/jacoco.xml
+
+  deploy-to-gh-pages:
+    docker:
+      - image: cimg/openjdk:17.0
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Générer le rapport Checkstyle
+          command: |
+            mvn checkstyle:checkstyle site
+      - run:
+          name: Générer la Javadoc
+          command: |
+            mvn javadoc:javadoc
+      - run:
+          name: Déployer sur GitHub Pages
+          command: |
+            # Configuration Git
+            git config --global user.name "SwanNOBILI"
+            git config --global user.email "nobili.swan@gmail.com"
+            git fetch --all
+            git checkout --orphan gh-pages
+            
+            # Copier les fichiers générés dans les bons dossiers
+            mkdir -p javadoc
+            mkdir -p checkstyle
+            cp -R target/site/apidocs/* javadoc/  # Copier la Javadoc
+            cp target/site/checkstyle.html checkstyle/index.html  # Copier le rapport Checkstyle
+            
+            # Add, Commit and Push
+            git add .
+            git commit -m "Mise à jour de la Javadoc et du rapport Checkstyle"
+            git push  --force https://$GH_TOKEN@github.com/SwanNOBILI/ceri-m1-techniques-de-test.git gh-pages
+
+# Workflow pour orchestrer les jobs
+workflows:
+  version: 2
+  build-and-upload:
+    jobs:
+      - build-and-test  # Exécuter d'abord le job de construction et tests
+      - deploy-to-gh-pages:
+          requires:
+            - build-and-test  # Le déploiement ne doit être effectué qu'après la génération des rapports
